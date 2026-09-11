@@ -6,7 +6,7 @@
   generator at all. This namespace drives the REAL actor stack
   (`hardwarepaintops.operation` -> `hardwarepaintops.governor` ->
   `hardwarepaintops.store`) through a scenario adapted from this repo's
-  own `hardwarepaintops.sim` demo driver (`clojure -M:dev:run`, confirmed
+  own `hardwarepaintops.sim` demo driver (`kbb -M:dev:run`, confirmed
   to run correctly against the real seeded store/vendor directory before
   this file was written -- store ids store-1/store-2/store-3 and vendor
   ids vendor-1/vendor-2 DO match `hardwarepaintops.store/demo-data`, and
@@ -18,7 +18,7 @@
   page content, byte-identical across reruns against the same seed
   (verify by diffing two consecutive runs).
 
-  Usage: `clojure -M:dev:render-html [out-file]`
+  Usage: `kbb -M:dev:render-html [out-file]`
   (default `docs/samples/operator-console.html`)."
   (:require [jp-go-dds.skin]
             [kotoba.lang.text :as str]
@@ -188,7 +188,7 @@
      "<main>\n"
      "  <section class=\"card\">\n"
      "    <h2>Hardware / paint / glass stores</h2>\n"
-     "    <p class=\"muted\">Demo snapshot — build-time-generated from <code>hardwarepaintops.store</code> via <code>hardwarepaintops.render-html</code> (<code>clojure -M:dev:render-html</code>), regenerated nightly.</p>\n"
+     "    <p class=\"muted\">Demo snapshot — build-time-generated from <code>hardwarepaintops.store</code> via <code>hardwarepaintops.render-html</code> (<code>kbb -M:dev:render-html</code>), regenerated nightly.</p>\n"
      "    <table>\n"
      "      <thead><tr><th>Store</th><th>Name</th><th>Registration status</th><th>Last coordination status</th></tr></thead>\n"
      "      <tbody>\n"
