@@ -1,6 +1,6 @@
 (ns hardwarepaintops.phase-test
   "Unit tests of `hardwarepaintops.phase` rollout logic."
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [hardwarepaintops.phase :as phase]))
 
 (deftest phase-0-read-only

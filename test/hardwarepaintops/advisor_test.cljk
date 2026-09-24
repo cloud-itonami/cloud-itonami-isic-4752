@@ -1,6 +1,6 @@
 (ns hardwarepaintops.advisor-test
   "Unit tests of `hardwarepaintops.advisor` proposal generation."
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [hardwarepaintops.advisor :as adv]
             [hardwarepaintops.store :as store]))
 
