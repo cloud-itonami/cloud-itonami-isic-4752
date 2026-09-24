@@ -1,0 +1,43 @@
+;; What this vertical's robot physically does, declared for
+;; kotoba.robotics.process (kotoba-lang/robotics). `kbb -M:dev:physics` runs it.
+;;
+;; README "Robotics premise": a robot may perform the physical work of a
+;; hardware / paint / glass store (ISIC 4752) -- shelfing, picking, paint
+;; tinting-machine operation, restocking. Here: an arm moving paint cans from
+;; the shelf onto the tinting shaker, the colorant dispenser pushing viscous
+;; colorant through its dispense line, and a glass A-frame cart carrying
+;; sheets from the cutting room to the pickup counter.
+;;
+;; Every number without a cited source is marked `estimate` in its :basis.
+;; Replacing an estimate with a sourced value is this bot's growth work.
+{:physics/schema "itonami.physical-ai.spec.v1"
+ :repo "cloud-itonami/cloud-itonami-isic-4752"
+ :cases
+ [{:id :paint-can-to-shaker
+   :kind :manipulator
+   :procedure "arm picks a paint can (quart to 5-gallon pail) from the shelf and sets it on the tinting shaker platform"
+   :params {:l1-m 0.55 :l2-m 0.50 :m1-kg 5.0 :m2-kg 3.5
+            :from [0.30 0.80] :to [0.75 0.10] :duration-s 3.0 :steps 500}
+   :sweep {:param :payload-kg :values [1.5 4.5 11.0 18.0 23.0]}
+   :quantity :peak-tau1-nm
+   :limit {:max 150.0 :basis "estimate: continuous shoulder torque of a ~12 kg-payload collaborative arm; a full 5-gallon pail weighs ~20-25 kg"}
+   :boundary {:lo 0.5 :hi 60.0}}
+  {:id :colorant-dispense-line
+   :kind :pipe-flow
+   :procedure "tinting machine pumps colorant through a 1.5 m, 4 mm dispense line at 1 mL/s into the can"
+   :params {:q-m3s 1.0e-6 :diameter-m 0.004 :length-m 1.5 :roughness-m 1.5e-6
+            :density-kg-m3 1300.0 :pump-efficiency 0.5 :elevation-m 0.3}
+   :sweep {:param :viscosity-pa-s :values [0.2 0.5 1.0 2.0 4.0]}
+   :quantity :pressure-drop-pa
+   :limit {:max 5.0e5 :basis "estimate: ~5 bar delivery pressure of a small positive-displacement colorant pump; colorant paste viscosity ~0.2-4 Pa.s is also an estimate"}
+   :boundary {:lo 0.05 :hi 10.0}}
+  {:id :glass-a-frame-cart-stop
+   :kind :transport
+   :procedure "cart carries cut glass sheets on an A-frame from the cutting room to the pickup counter and must stop for a person stepping into the aisle"
+   :params {:mass-kg 80.0 :payload-kg 300.0 :distance-m 25.0 :v-max-mps 0.8 :a-max-mps2 0.3
+            :drive-force-n 400.0 :crr 0.015 :cog-height-m 0.40 :payload-cog-height-m 1.00
+            :support-half-length-m 0.35 :max-time-s 600.0}
+   :sweep {:param :brake-decel-mps2 :values [0.5 1.0 2.0 3.0 4.0]}
+   :quantity :min-tipover-margin
+   :limit {:min 0.25 :basis "estimate: keep a 25 % stability reserve against the sheet stack tipping forward when the cart brakes"}
+   :boundary {:lo 0.3 :hi 6.0}}]}
